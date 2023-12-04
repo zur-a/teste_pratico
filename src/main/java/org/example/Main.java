@@ -11,7 +11,7 @@ import java.util.Comparator;
 import java.util.*;
 
 public class Main {
-    private final BigDecimal salarioMinimo = new BigDecimal("1212.00");
+    private static final BigDecimal salarioMinimo = new BigDecimal("1212.00");
     public static void main(String[] args) {
         ArrayList<Funcionario> funcionarios = generateList();
 
@@ -22,31 +22,37 @@ public class Main {
         aumentarSalarioParaTodos(funcionarios, 10);
 
         //Criando um Map e agrupando os funcinários por função
-        //Map<String, List<Funcionario>> funcionariosPorFuncao = agruparPorFuncao(funcionarios);
+        Map<String, List<Funcionario>> funcionariosPorFuncao = agruparPorFuncao(funcionarios);
 
         //Imprimindo todos os funcionários da lista
-        //printFuncionarios(funcionarios);
+        printFuncionarios(funcionarios);
 
         //Imprimindo os funcionários, agrupados por função
-        //printFuncionariosPorFuncao(funcionariosPorFuncao);
+        printFuncionariosPorFuncao(funcionariosPorFuncao);
 
         //Imprimindo os funcionários aniversariantes do mês 10 e 12
-        //imprimirAniversariantes(funcionarios, 10, 12);
+        imprimirAniversariantes(funcionarios, 10, 12);
 
         //Imprimindo funcionário com a maior idade
-        //imprimirFuncionarioMaisVelho(funcionarios);
+        imprimirFuncionarioMaisVelho(funcionarios);
 
         //Imprimindo a lista de funcionários por ordem alfabética
-        //imprimirFuncionariosPorOrdemAlfabetica(funcionarios);
+        imprimirFuncionariosPorOrdemAlfabetica(funcionarios);
 
         //Imprimindo o total dos salários dos funcionários
         imprimirTotalSalarios(funcionarios);
 
         //Imprimindo salários em função de quantos salários mínimos o funcionário ganha
-
+        imprimirSalariosMinimos(funcionarios, salarioMinimo);
     }
 
-    
+    private static void imprimirSalariosMinimos(List<Funcionario> funcionarios, BigDecimal salarioMinimo) {
+        funcionarios.forEach(funcionario -> {
+            BigDecimal salariosMinimos = funcionario.getSalario().divide(salarioMinimo, 2, BigDecimal.ROUND_HALF_UP);
+            System.out.println("Funcionário: " + funcionario.getNome() +
+                    ", Salários Mínimos: " + salariosMinimos);
+        });
+    }
 
     private static void imprimirTotalSalarios(List<Funcionario> funcionarios) {
         BigDecimal totalSalarios = funcionarios.stream()
