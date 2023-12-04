@@ -33,6 +33,10 @@ public class Funcionario extends Pessoa {
         this.funcao = funcao;
     }
 
+    public void aumentarSalario(double percentualAumento) {
+        BigDecimal aumento = salario.multiply(BigDecimal.valueOf(percentualAumento / 100.0));
+        salario = salario.add(aumento);
+    }
     @Override
     public String toString() {
         // Format the salary with a comma for the thousands separator and a dot for the decimal separator

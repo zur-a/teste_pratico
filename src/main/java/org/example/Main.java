@@ -16,6 +16,8 @@ public class Main {
         //Remove o funcionário 'João' da lista
         removeFuncionarioByName(funcionarios, "João");
 
+        //Aumentando o salário de todos os funcionários em 10%
+        aumentarSalarioParaTodos(funcionarios, 10);
         //Printa os funcionários da lista
         for (Funcionario funcionario : funcionarios) {
             System.out.println(funcionario);
@@ -46,6 +48,11 @@ public class Main {
                 iterator.remove();
             }
         }
+    }
 
+    private static void aumentarSalarioParaTodos(ArrayList<Funcionario> funcionarios, double percentualAumento) {
+        for (Funcionario funcionario : funcionarios) {
+            funcionario.aumentarSalario(percentualAumento);
+        }
     }
 }
