@@ -11,6 +11,7 @@ import java.util.Comparator;
 import java.util.*;
 
 public class Main {
+    private final BigDecimal salarioMinimo = new BigDecimal("1212.00");
     public static void main(String[] args) {
         ArrayList<Funcionario> funcionarios = generateList();
 
@@ -21,7 +22,7 @@ public class Main {
         aumentarSalarioParaTodos(funcionarios, 10);
 
         //Criando um Map e agrupando os funcinários por função
-        Map<String, List<Funcionario>> funcionariosPorFuncao = agruparPorFuncao(funcionarios);
+        //Map<String, List<Funcionario>> funcionariosPorFuncao = agruparPorFuncao(funcionarios);
 
         //Imprimindo todos os funcionários da lista
         //printFuncionarios(funcionarios);
@@ -33,13 +34,34 @@ public class Main {
         //imprimirAniversariantes(funcionarios, 10, 12);
 
         //Imprimindo funcionário com a maior idade
-        imprimirFuncionarioMaisVelho(funcionarios);
+        //imprimirFuncionarioMaisVelho(funcionarios);
 
         //Imprimindo a lista de funcionários por ordem alfabética
+        //imprimirFuncionariosPorOrdemAlfabetica(funcionarios);
+
+        //Imprimindo o total dos salários dos funcionários
+        imprimirTotalSalarios(funcionarios);
+
+        //Imprimindo salários em função de quantos salários mínimos o funcionário ganha
 
     }
 
     
+
+    private static void imprimirTotalSalarios(List<Funcionario> funcionarios) {
+        BigDecimal totalSalarios = funcionarios.stream()
+                .map(Funcionario::getSalario)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+
+        System.out.println("Total dos salários dos funcionários: " + totalSalarios);
+    }
+
+    private static void imprimirFuncionariosPorOrdemAlfabetica(List<Funcionario> funcionarios) {
+        funcionarios.stream()
+                .sorted(Comparator.comparing(Funcionario::getNome))
+                .forEach(funcionario -> System.out.println(funcionario));
+    }
+
     private static void imprimirFuncionarioMaisVelho(List<Funcionario> funcionarios) {
         funcionarios.stream()
                 .max(Comparator.comparing(funcionario ->
