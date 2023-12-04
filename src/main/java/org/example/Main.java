@@ -5,6 +5,9 @@ import org.example.model.Funcionario;
 import java.math.BigDecimal;
 import java.text.DateFormatSymbols;
 import java.time.LocalDate;
+import java.time.Period;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.*;
 
 public class Main {
@@ -27,10 +30,35 @@ public class Main {
         //printFuncionariosPorFuncao(funcionariosPorFuncao);
 
         //Imprimindo os funcionários aniversariantes do mês 10 e 12
-        imprimirAniversariantes(funcionarios, 10, 12);
+        //imprimirAniversariantes(funcionarios, 10, 12);
+
+        //Imprimindo funcionário com a maior idade
+        imprimirFuncionarioMaisVelho(funcionarios);
+
+        //Imprimindo a lista de funcionários por ordem alfabética
 
     }
 
+    
+    private static void imprimirFuncionarioMaisVelho(List<Funcionario> funcionarios) {
+        funcionarios.stream()
+                .max(Comparator.comparing(funcionario ->
+                        Period.between(funcionario.getDataNascimento(), LocalDate.now()).getYears()))
+                .ifPresentOrElse(
+                        funcionario -> {
+                            System.out.println("Funcionário mais velho:");
+                            System.out.println("Nome: " + funcionario.getNome());
+                            System.out.println("Data de Nascimento: " + funcionario.getDataNascimento());
+                            System.out.println("Idade: " + calcularIdade(funcionario.getDataNascimento()));
+                            System.out.println("---------------");
+                        },
+                        () -> System.out.println("Não há funcionários na lista.")
+                );
+    }
+
+    private static int calcularIdade(LocalDate dataNascimento) {
+        return Period.between(dataNascimento, LocalDate.now()).getYears();
+    }
 
     private static void imprimirAniversariantes(List<Funcionario> funcionarios, int... mesesAniversario) {
         Map<Integer, List<Funcionario>> aniversariantesPorMes = new HashMap<>();
