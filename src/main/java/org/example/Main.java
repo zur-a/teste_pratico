@@ -12,7 +12,11 @@ import java.util.Iterator;
 public class Main {
     public static void main(String[] args) {
         ArrayList<Funcionario> funcionarios = generateList();
+
+        //Remove o funcionário 'João' da lista
         removeFuncionarioByName(funcionarios, "João");
+
+        //Printa os funcionários da lista
         for (Funcionario funcionario : funcionarios) {
             System.out.println(funcionario);
         }

@@ -1,8 +1,11 @@
 package org.example.model;
 
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 
 public class Funcionario extends Pessoa {
     private BigDecimal salario;
@@ -32,11 +35,18 @@ public class Funcionario extends Pessoa {
 
     @Override
     public String toString() {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        // Format the salary with a comma for the thousands separator and a dot for the decimal separator
+        DecimalFormatSymbols symbols = new DecimalFormatSymbols(Locale.getDefault());
+        symbols.setDecimalSeparator(',');
+        symbols.setGroupingSeparator('.');
+
+        DecimalFormat df = new DecimalFormat("#,##0.00", symbols);
+        String formattedSalary = df.format(salario);
+
         return "Nome: " + getNome() +
-                "\nData de Nascimento: " + getDataNascimento().format(formatter) +
-                "\nSalário: " + getSalario() +
-                "\nFunção: " + getFuncao() +
+                "\nData de Nascimento: " + getDataNascimento() +
+                "\nSalário: " + formattedSalary +
+                "\nFunção: " + funcao +
                 "\n---------------";
     }
 }
