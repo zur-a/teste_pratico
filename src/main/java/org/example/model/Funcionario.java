@@ -50,7 +50,6 @@ public class Funcionario extends Pessoa {
         return "Nome: " + getNome() +
                 "\nData de Nascimento: " + getDataNascimento() +
                 "\nSalário: " + formattedSalary +
-                "\nFunção: " + funcao +
                 "\n---------------";
     }
 }

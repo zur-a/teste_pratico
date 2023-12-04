@@ -3,11 +3,9 @@ package org.example;
 import org.example.model.Funcionario;
 
 import java.math.BigDecimal;
-import java.sql.SQLOutput;
+import java.text.DateFormatSymbols;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.*;
 
 public class Main {
     public static void main(String[] args) {
@@ -18,9 +16,75 @@ public class Main {
 
         //Aumentando o salário de todos os funcionários em 10%
         aumentarSalarioParaTodos(funcionarios, 10);
-        //Printa os funcionários da lista
+
+        //Criando um Map e agrupando os funcinários por função
+        Map<String, List<Funcionario>> funcionariosPorFuncao = agruparPorFuncao(funcionarios);
+
+        //Imprimindo todos os funcionários da lista
+        //printFuncionarios(funcionarios);
+
+        //Imprimindo os funcionários, agrupados por função
+        //printFuncionariosPorFuncao(funcionariosPorFuncao);
+
+        //Imprimindo os funcionários aniversariantes do mês 10 e 12
+        imprimirAniversariantes(funcionarios, 10, 12);
+
+    }
+
+
+    private static void imprimirAniversariantes(List<Funcionario> funcionarios, int... mesesAniversario) {
+        Map<Integer, List<Funcionario>> aniversariantesPorMes = new HashMap<>();
+
+        // Inicializar listas para cada mês
+        for (int mes : mesesAniversario) {
+            aniversariantesPorMes.put(mes, new ArrayList<>());
+        }
+
+        // Agrupar funcionários por mês de aniversário
+        for (Funcionario funcionario : funcionarios) {
+            int mesNascimento = funcionario.getDataNascimento().getMonthValue();
+            if (aniversariantesPorMes.containsKey(mesNascimento)) {
+                aniversariantesPorMes.get(mesNascimento).add(funcionario);
+            }
+        }
+
+        // Imprimir os aniversariantes agrupados
+        for (Map.Entry<Integer, List<Funcionario>> entry : aniversariantesPorMes.entrySet()) {
+            int mesAniversario = entry.getKey();
+            String mes = obterMesEmPortugues(mesAniversario);
+            System.out.println("Aniversariantes de " + mes + ":");
+
+            List<Funcionario> aniversariantesDoMes = entry.getValue();
+            if (aniversariantesDoMes.isEmpty()) {
+                System.out.println("   Nenhum aniversariante neste mês.");
+            } else {
+                for (Funcionario funcionario : aniversariantesDoMes) {
+                    System.out.println("   " + funcionario);
+                }
+            }
+            System.out.println("---------------");
+        }
+    }
+
+    private static String obterMesEmPortugues(int mes) {
+        DateFormatSymbols symbols = new DateFormatSymbols(new Locale("pt", "BR"));
+        return symbols.getMonths()[mes - 1];
+    }
+
+    private static void printFuncionarios(ArrayList<Funcionario> funcionarios) {
         for (Funcionario funcionario : funcionarios) {
             System.out.println(funcionario);
+        }
+    }
+
+    private static void printFuncionariosPorFuncao(Map<String, List<Funcionario>> funcionariosPorFuncao) {
+        for (Map.Entry<String, List<Funcionario>> entry : funcionariosPorFuncao.entrySet()) {
+            System.out.println("Função: " + entry.getKey());
+            System.out.println(" ");
+            for (Funcionario funcionario : entry.getValue()) {
+                System.out.println("   " + funcionario);
+            }
+            System.out.println("---------------");
         }
     }
 
@@ -54,5 +118,21 @@ public class Main {
         for (Funcionario funcionario : funcionarios) {
             funcionario.aumentarSalario(percentualAumento);
         }
+    }
+
+    private static Map<String, List<Funcionario>> agruparPorFuncao(List<Funcionario> funcionarios) {
+        Map<String, List<Funcionario>> funcionariosPorFuncao = new HashMap<>();
+
+        for (Funcionario funcionario : funcionarios) {
+            String funcao = funcionario.getFuncao();
+
+            // Se a função ainda não estiver no mapa, criar uma nova lista
+            funcionariosPorFuncao.putIfAbsent(funcao, new ArrayList<>());
+
+            // Adicionar o funcionário à lista correspondente à sua função
+            funcionariosPorFuncao.get(funcao).add(funcionario);
+        }
+
+        return funcionariosPorFuncao;
     }
 }
